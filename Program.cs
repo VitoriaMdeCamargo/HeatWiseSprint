@@ -4,7 +4,6 @@ using HeatWise_Sprint_2.Net.Repositorios;
 using HeatWise_Sprint_2.Net.Persistence.Repositorio;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace HeatWise_Sprint_2.Net
 {
     public class Program
@@ -13,16 +12,18 @@ namespace HeatWise_Sprint_2.Net
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container(caixa) de inje��o de dependencia
+            // Add services to the container(caixa) de injeção de dependência
             builder.Services.AddControllersWithViews();
 
+            // Substituir o Oracle pelo Azure SQL
             builder.Services.AddDbContext<HeatWiseDbContext>(
                 options =>
                 {
-                    options.UseOracle(builder.Configuration.GetConnectionString("OracleConnection"));
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureSqlDb"));
                 }
             );
 
+            // Repositórios injetados no container de dependência
             builder.Services.AddScoped<IPlanoRepositorio, PlanoRepositorio>();
             builder.Services.AddScoped<IEmpresaRepositorio, EmpresaRepositorio>();
             builder.Services.AddScoped<ISiteRepositorio, SiteRepositorio>();
@@ -30,11 +31,11 @@ namespace HeatWise_Sprint_2.Net
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure o pipeline de requisição HTTP.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                // O valor padrão de HSTS é 30 dias.
                 app.UseHsts();
             }
 
