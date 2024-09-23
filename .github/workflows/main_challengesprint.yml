@@ -25,7 +25,7 @@ jobs:
         run: dotnet build "HeatWise-Sprint 2.Net.sln" --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish "HeatWise-Sprint 2.Net.sln" -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish "HeatWise-Sprint 2.Net.sln" -c Release -o "C:\Program Files\dotnet\myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
